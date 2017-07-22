@@ -12,7 +12,7 @@ import { Widget } from '../../models/widget';
 })
 
 export class AppTestPageComponent {
-    widgetData: Widget;
+    // widgetData: Widget;
     constructor(public widgetService: WidgetService) {}
     setData(data: Widget): void {
         this.widgetService.setData(data);

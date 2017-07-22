@@ -23,7 +23,7 @@ export class AppHeaderComponent implements OnInit {
     ];
     constructor(public widgetService: WidgetService) {}
     ngOnInit() {
-        this.titlesData = this.titles[0];
+        this.titlesData = this.titles[2];
         this.sendEnvUrl(this.titlesData.url);
         this.getVersion(this.titlesData.url);
     }

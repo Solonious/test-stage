@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
-import { Observable }        from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/of';
 
@@ -38,8 +38,5 @@ export class AppSearchComponent implements OnInit {
     }
     sendData(data: Widget): void {
         this.onGetData.emit(data);
-    }
-    setData(data: Widget): void {
-        this.widgetService.setData(data);
     }
 }

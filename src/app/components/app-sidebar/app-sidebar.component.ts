@@ -1,10 +1,10 @@
-import { Component, OnInit, EventEmitter, Output }    from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
-import { WidgetService }    from '../../services/widget.service';
+import { WidgetService } from '../../services/widget.service';
 
-import {Categories}     from '../../models/categories';
-import { Widgets }      from '../../models/widgets';
-import { Widget }      from '../../models/widget';
+import {Categories} from '../../models/categories';
+import { Widgets } from '../../models/widgets';
+import { Widget } from '../../models/widget';
 
 @Component({
     selector: 'app-sidebar',
@@ -15,7 +15,7 @@ import { Widget }      from '../../models/widget';
 
 export class AppSidebarComponent implements OnInit {
     @Output() onGetData = new EventEmitter<Widget>();
-    isActive: boolean = false;
+    isActive = false;
     selectedCategory: Categories;
     categories: Categories[];
     widgetsList: Widgets[];
@@ -46,7 +46,4 @@ export class AppSidebarComponent implements OnInit {
     sendData(data: Widget): void {
         this.onGetData.emit(data);
     }
-    // setData(data: Widget): void {
-    //     this.widgetService.setData(data);
-    // }
 }

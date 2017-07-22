@@ -27,15 +27,17 @@ export class WidgetService {
     getCategories(): Observable<Categories[]> {
         return this.http.get(`${this.apiUrl + this.categoriesUrl}`)
             .map(res => {
-               let categoriesList = res.json();
-               let categories: Categories[] = [];
-               for (let index in categoriesList) {
-                   let category = categoriesList[index];
+               const categoriesList = res.json();
+               const categories: Categories[] = [];
+               for (const index in categoriesList) {
+                 if (categoriesList.hasOwnProperty(index)) {
+                   const category = categoriesList[index];
                    categories.push({
-                       id: category.id,
-                       title: category.title,
-                       widgetsCount: category.widgetsCount
+                     id: category.id,
+                     title: category.title,
+                     widgetsCount: category.widgetsCount
                    });
+                 }
                }
                return categories;
             })
@@ -46,12 +48,10 @@ export class WidgetService {
         return Observable.throw(error.message || error);
     }
     getWidgets(limit: number, category?: string): Observable<Widgets[]> {
-        var url;
         if (category) {
-            url = `${this.apiUrl}widgets/list.json?limit=${limit}&category=${category}&offset=0`;
-        } else {
-            url = `${this.apiUrl}widgets/list.json?limit=${limit}`;
+           const url = `${this.apiUrl}widgets/list.json?limit=${limit}&category=${category}&offset=0`;
         }
+        const url = `${this.apiUrl}widgets/list.json?limit=${limit}`;
         return this.http.get(url)
             .map(res => this.widgets = res.json().data);
     }

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { WidgetService }    from '../../services/widget.service';
+import { WidgetService } from '../../services/widget.service';
 import { Widget } from '../../models/widget';
 
 @Component({
@@ -14,7 +14,7 @@ export class AppMainComponent {
     @Input() widgetData: Widget;
     @Input() envUrl: string;
     widgetFrameParams: any;
-    message: string = `Please select widget`;
+    message = `Please select widget`;
     constructor(
         private widgetService: WidgetService
     ) {}
