@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { WidgetService } from '../../services/widget.service';
 import { Widget } from '../../models/widget';
@@ -10,7 +10,7 @@ import { Widget } from '../../models/widget';
     providers: [WidgetService]
 })
 
-export class AppMainComponent {
+export class AppMainComponent implements OnInit {
     @Input() widgetData: Widget;
     @Input() envUrl: string;
     widgetFrameParams: any;
@@ -18,6 +18,12 @@ export class AppMainComponent {
     constructor(
         private widgetService: WidgetService
     ) {}
+    ngOnInit() {
+        this.widgetService.getWidget('chart').subscribe(data => {
+            this.widgetData = data;
+            this.createWidget(this.widgetData.custom_init_code, this.envUrl);
+        });
+    }
     openInWindow(widget: string, url: string) {
         this.widgetService.openInNewWindow(widget, url);
     }

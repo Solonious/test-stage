@@ -21,6 +21,7 @@ import { Widget } from '../../models/widget';
 export class AppSearchComponent implements OnInit {
     @Output() onGetData = new EventEmitter<Widget>();
     widgets: Widgets[];
+    query: any;
 
     constructor(private widgetService: WidgetService) {}
 

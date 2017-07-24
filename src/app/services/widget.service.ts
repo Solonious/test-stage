@@ -48,10 +48,12 @@ export class WidgetService {
         return Observable.throw(error.message || error);
     }
     getWidgets(limit: number, category?: string): Observable<Widgets[]> {
+        var url;
         if (category) {
-           const url = `${this.apiUrl}widgets/list.json?limit=${limit}&category=${category}&offset=0`;
+            url = `${this.apiUrl}widgets/list.json?limit=${limit}&category=${category}&offset=0`;
+        } else {
+            url = `${this.apiUrl}widgets/list.json?limit=${limit}`;
         }
-        const url = `${this.apiUrl}widgets/list.json?limit=${limit}`;
         return this.http.get(url)
             .map(res => this.widgets = res.json().data);
     }
