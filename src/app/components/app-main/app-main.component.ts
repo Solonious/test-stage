@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 import { WidgetService } from '../../services/widget.service';
 import { Widget } from '../../models/widget';
@@ -10,7 +10,7 @@ import { Widget } from '../../models/widget';
     providers: [WidgetService]
 })
 
-export class AppMainComponent implements OnInit {
+export class AppMainComponent implements OnChanges, OnInit {
     @Input() widgetData: Widget;
     @Input() envUrl: string;
     widgetFrameParams: any;
@@ -18,6 +18,17 @@ export class AppMainComponent implements OnInit {
     constructor(
         private widgetService: WidgetService
     ) {}
+    ngOnChanges(changes: SimpleChanges) {
+      for (const prop in changes) {
+        if (changes.hasOwnProperty(prop)) {
+          const chpr = changes[prop];
+          if (chpr.isFirstChange()) {
+            return;
+          }
+            this.createWidget(chpr.currentValue.custom_init_code, this.envUrl);
+        }
+      }
+    }
     ngOnInit() {
         this.widgetService.getWidget('chart').subscribe(data => {
             this.widgetData = data;
