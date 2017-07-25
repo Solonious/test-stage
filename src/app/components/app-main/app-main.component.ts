@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 
 import { WidgetService } from '../../services/widget.service';
 import { Widget } from '../../models/widget';
+import {WidgetData} from '../../models/widget-data';
 
 @Component({
     selector: 'app-main',
@@ -13,7 +14,7 @@ import { Widget } from '../../models/widget';
 export class AppMainComponent implements OnChanges, OnInit {
     @Input() widgetData: Widget;
     @Input() envUrl: string;
-    widgetFrameParams: any;
+    widgetFrameParams: WidgetData;
     message = `Please select widget`;
     constructor(
         private widgetService: WidgetService
@@ -42,9 +43,11 @@ export class AppMainComponent implements OnChanges, OnInit {
         this.widgetService.showInEditor(widget, url);
     }
     createWidget(embedCode: string, envurl: string) {
-            this.widgetFrameParams = this.widgetService.createWidgetData(embedCode, envurl);
+      if (!embedCode) {
+        return;
+      }
+        this.widgetFrameParams = this.widgetService.createWidgetData(embedCode, envurl);
     }
-
 }
 
 
