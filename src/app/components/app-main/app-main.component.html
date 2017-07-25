@@ -12,12 +12,13 @@
 		</section>
 	</section>
 	<section class="widget-frame" id="widgetFrame">
-        <iframe *ngIf="widgetFrameParams"
+        <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
+        <iframe *ngIf="widgetFrameParams && !errorMessage"
                 [src]="widgetFrameParams.dataSrc"
                 [width]="widgetFrameParams.width"
                 [height]="widgetFrameParams.height"
                 frameborder="0"></iframe>
     </section>
-	<textarea #embedcode [(ngModel)]="widgetData.custom_init_code"></textarea>
+	<textarea #embedcode [(ngModel)]="widgetData.custom_init_code" [class.error]="!widgetFrameParams"></textarea>
 	<button  (click)="createWidget(embedcode.value, envUrl);">Generate widget</button>
 </section>

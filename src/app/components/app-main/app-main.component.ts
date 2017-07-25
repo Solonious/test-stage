@@ -16,6 +16,7 @@ export class AppMainComponent implements OnChanges, OnInit {
     @Input() envUrl: string;
     widgetFrameParams: WidgetData;
     message = `Please select widget`;
+    errorMessage: string;
     constructor(
         private widgetService: WidgetService
     ) {}
@@ -25,6 +26,12 @@ export class AppMainComponent implements OnChanges, OnInit {
           const chpr = changes[prop];
           if (chpr.isFirstChange()) {
             return;
+          }
+          if (chpr.currentValue.get_widget_url) {
+              this.errorMessage = 'Oops! Something wrong... Widget don\'t show!!! Sorry!';
+              return;
+          } else {
+              this.errorMessage = '';
           }
             this.createWidget(chpr.currentValue.custom_init_code, this.envUrl);
         }
