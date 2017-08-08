@@ -1,16 +1,10 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/of';
-
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
+import { WidgetsData } from '../../models/widget-data';
+import { Widget } from '../../models/widget';
 
 import { WidgetService } from '../../services/widget.service';
-import { Widgets } from '../../models/widgets';
-import { Widget } from '../../models/widget';
 
 @Component({
     selector: 'app-search',
@@ -19,25 +13,22 @@ import { Widget } from '../../models/widget';
     providers: [WidgetService]
 })
 export class AppSearchComponent implements OnInit {
-    @Output() onGetData = new EventEmitter<Widget>();
-    widgets: Widgets[];
-    query: any;
+    @Output() getSelectedWidgetData = new EventEmitter<Widget>();
+    @Input() widgetsData: WidgetsData;
+    searchInput = new FormControl();
+    selectedWidget: Widget;
+    widgetsList = [];
 
-    constructor(private widgetService: WidgetService) {}
+    constructor(private service: WidgetService) {}
 
     ngOnInit(): void {
-        this.getWidgets().subscribe(data => this.widgets = data);
+        this.getWidgets(this.widgetsData);
     }
-    getWidgets(): Observable<Widgets[]> {
-        return this.widgetService.getWidgets(100);
+    getWidgets(data: WidgetsData): void {
+        this.widgetsList = this.service.getWidgets(data);
     }
-    selectWidget(widget: Widget) {
-        this.widgetService.getWidget(widget.slug).subscribe(data => {
-            // this.widgetService.createWidgetData(data.custom_init_code);
-            this.sendData(data);
-        });
-    }
-    sendData(data: Widget): void {
-        this.onGetData.emit(data);
-    }
+    onSelectWidget(widget: Widget): void {
+        this.getSelectedWidgetData.emit(widget);
+        this.selectedWidget = widget;
+    };
 }

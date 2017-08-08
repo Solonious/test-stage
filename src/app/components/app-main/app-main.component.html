@@ -1,24 +1,24 @@
-<section class="no-data" *ngIf="!widgetData">
-	<h5>{{message}}</h5>
-</section>
-<section *ngIf="widgetData">
+<!--<section class="no-data" *ngIf="!selectedWidgetData">-->
+<!--	<h5>{{message}}</h5>-->
+<!--</section>-->
+<section>
 	<section class="row justify-content-between">
-		<h4 class="col-md-4">{{widgetData.translations[0].title}}</h4>
+		<h4 class="col-md-4">{{selectedWidgetData.title}}</h4>
 		<section class="col-md-8">
             <section class="row justify-content-end">
-                <button (click)="openInWindow(widgetData.module_name, envUrl)">new window</button>
-                <button (click)="openInEditor(widgetData.module_name, envUrl)">constructor</button>
+                <button (click)="openInWindow(selectedWidgetData.module_name, envUrl)">new window</button>
+                <button (click)="openInEditor(selectedWidgetData.module_name, envUrl)">constructor</button>
             </section>
 		</section>
 	</section>
-	<section class="widget-frame" id="widgetFrame">
+	<section  *ngIf="widgetFrameParams" class="widget-frame" id="widgetFrame">
         <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
-        <iframe *ngIf="widgetFrameParams && !errorMessage"
+        <iframe *ngIf="widgetFrameParams"
                 [src]="widgetFrameParams.dataSrc"
                 [width]="widgetFrameParams.width"
                 [height]="widgetFrameParams.height"
                 frameborder="0"></iframe>
     </section>
-	<textarea #embedcode [(ngModel)]="widgetData.custom_init_code" [class.error]="!widgetFrameParams"></textarea>
+	<textarea #embedcode [(ngModel)]="selectedWidgetData.custom_init_code" [class.error]="!widgetFrameParams"></textarea>
 	<button  (click)="createWidget(embedcode.value, envUrl);">Generate widget</button>
 </section>

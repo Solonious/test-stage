@@ -1,14 +1,13 @@
 <div id="search-component">
     <div class="input-group search-input">
         <span class="search"></span>
-        <input #searchBox [(ngModel)]="query" class="form-control" id="search" placeholder="Search widget...">
-        <span [class.visible]="searchBox.value" (click)="searchBox.value = '';" class="close">&times;</span>
+        <input [formControl]="searchInput" class="form-control" name="searchInput" placeholder="Search widget...">
+        <span [class.visible]="searchInput.value" (click)="searchInput.setValue('');" class="close">&times;</span>
     </div>
-    <div [class.visible]="searchBox.value" class="search-result">
+    <div [class.visible]="searchInput.value" class="search-result">
         <ul>
-            <li *ngFor="let item of widgets | FilterPipe: query">
-                <a href=""
-                   (click)="selectWidget(item);
+            <li *ngFor="let item of widgetsList | FilterPipe: searchInput.value">
+                <a (click)="onSelectWidget(item);
                    $event.preventDefault();">{{item.title}}</a>
             </li>
         </ul>

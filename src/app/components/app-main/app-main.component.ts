@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 import { WidgetService } from '../../services/widget.service';
+
 import { Widget } from '../../models/widget';
-import {WidgetData} from '../../models/widget-data';
 
 @Component({
     selector: 'app-main',
@@ -12,9 +12,13 @@ import {WidgetData} from '../../models/widget-data';
 })
 
 export class AppMainComponent implements OnChanges, OnInit {
-    @Input() widgetData: Widget;
     @Input() envUrl: string;
-    widgetFrameParams: WidgetData;
+    @Input() selectedWidgetData: Widget;
+    widgetFrameParams: {
+        dataSrc: string;
+        height: string;
+        width: string;
+    };
     message = `Please select widget`;
     errorMessage: string;
     constructor(
@@ -38,10 +42,7 @@ export class AppMainComponent implements OnChanges, OnInit {
       }
     }
     ngOnInit() {
-        this.widgetService.getWidget('chart').subscribe(data => {
-            this.widgetData = data;
-            this.createWidget(this.widgetData.custom_init_code, this.envUrl);
-        });
+        this.createWidget(this.selectedWidgetData.custom_init_code, this.envUrl);
     }
     openInWindow(widget: string, url: string) {
         this.widgetService.openInNewWindow(widget, url);
@@ -50,7 +51,7 @@ export class AppMainComponent implements OnChanges, OnInit {
         this.widgetService.showInEditor(widget, url);
     }
     createWidget(embedCode: string, envurl: string) {
-      if (!embedCode) {
+        if (!embedCode) {
         return;
       }
         this.widgetFrameParams = this.widgetService.createWidgetData(embedCode, envurl);

@@ -1,5 +1,6 @@
-export class WidgetData {
-    dataSrc: any;
-    width: string;
-    height: string;
+import { Category } from './category'
+
+export class WidgetsData {
+    categories: Category[];
+    version: string;
 }

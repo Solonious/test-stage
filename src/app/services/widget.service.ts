@@ -7,79 +7,45 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { Categories } from '../models/categories';
+
+import { Category } from '../models/category';
+import { WidgetsData } from '../models/widget-data';
 import { Widget } from '../models/widget';
-import { Widgets } from '../models/widgets';
-import { WidgetData } from '../models/widget-data';
 
 @Injectable()
 export class WidgetService {
     windowObjectReference: any;
-    private apiUrl = 'https://www.dukascopy.com/trading-tools/api/';
-    private categoriesUrl = `categories/list.json`;
-    widgets: Widgets[];
-    widgetData: Widget;
-    envUrl: string;
+    private apiUrl = 'http://widgetserver/?path=common/widgetslist';
     constructor(
         private http: Http,
         private sanitizer: DomSanitizer
     ) {}
-    getCategories(): Observable<Categories[]> {
-        return this.http.get(`${this.apiUrl + this.categoriesUrl}`)
-            .map(res => {
-               const categoriesList = res.json();
-               const categories: Categories[] = [];
-               for (const index in categoriesList) {
-                 if (categoriesList.hasOwnProperty(index)) {
-                   const category = categoriesList[index];
-                   categories.push({
-                     id: category.id,
-                     title: category.title,
-                     widgetsCount: category.widgetsCount
-                   });
-                 }
-               }
-               return categories;
-            })
-            .catch(this.handleError);
-    }
+    // getCategoryData(): Observable<Category[]> {
+    //     return this.http.get(this.apiUrl)
+    //         .map(res => res.json().categories as Category[])
+    //         .catch(this.handleError);
+    // }
+    // getVersion(): Observable<string> {
+    //     return this.http.get(this.apiUrl)
+    //         .map(res => res.json().version as string)
+    // }
     handleError(error: any): Observable<any> {
         console.error('An error occurred', error);
         return Observable.throw(error.message || error);
     }
-    getWidgets(limit: number, category?: string): Observable<Widgets[]> {
-        var url;
-        if (category) {
-            url = `${this.apiUrl}widgets/list.json?limit=${limit}&category=${category}&offset=0`;
-        } else {
-            url = `${this.apiUrl}widgets/list.json?limit=${limit}`;
-        }
-        return this.http.get(url)
-            .map(res => this.widgets = res.json().data);
-    }
-    getWidget(slug: string): Observable<Widget> {
-        return this.http.get(`${this.apiUrl}widget/${slug}`)
-            .map(res => res.json() as Widget)
+    getData(): Observable<WidgetsData> {
+        return this.http.get(this.apiUrl)
+            .map(res => res.json() as WidgetsData)
             .catch(this.handleError);
     }
-    getVersion(url: string): Observable<any> {
-        return this.http.get(`${url}/?path=common/version`)
-            .map(res => res.json())
-            .catch(this.handleError);
+    getWidgets(data: WidgetsData): Array<Widget> {
+        const res = [];
+        data.categories.forEach(item => {
+            item.widgets.forEach(widget => res.push(widget));
+        });
+        return res;
     }
-    setData(data: Widget): void {
-        this.widgetData = data;
-    }
-    getData(): Widget {
-        return this.widgetData;
-    }
-    setUrl(url: string): void {
-        this.envUrl = url;
-    }
-    getUrl(): string {
-        return this.envUrl;
-    }
-    createWidgetData(embedCode: string, url: string): WidgetData {
+    createWidgetData(embedCode: string, url: string): any {
         const params = this.convertEmbedCodeToObject(embedCode);
         const qs = Object.keys(params.params)
             .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params.params[k])}`)

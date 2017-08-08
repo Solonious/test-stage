@@ -1,16 +1,14 @@
 <section class="sidebar">
 	<ul>
-		<li *ngFor="let category of categories" >
-            <span class="arrow" (click)="onSelectCategory(category);">
-                <i class="arrow-right" [class.arrow-down]="category === selectedCategory && isActive"></i>
+		<li *ngFor="let category of categories; let i = index" >
+            <span class="arrow" [class.arrow-down]="category !== selectedCategory" (click)="onSelectCategory(i)" *ngIf="category.title">
+                <i class="arrow-right" [class.arrow-down]="category === selectedCategory"></i>
                 <span [class.selected]="category === selectedCategory">{{category.title}}</span>
             </span>
-			<ul  class="submenu" *ngIf="category === selectedCategory && isActive">
-				<li class="widget-link" *ngFor="let item of widgetsList" >
-                    <a href=""
-                       (click)="onSelectWidget(item);
-                        $event.preventDefault();"
-                       [class.selected]="item === selectedWidget">{{item.title}}</a>
+			<ul  class="submenu" *ngIf="category === selectedCategory" [class.active]="category === selectedCategory">
+				<li class="widget-link" *ngFor="let item of widgetsList">
+                    <a (click)="onSelectWidget(item);
+                        $event.preventDefault();" [class.selected]="item === selectedWidget">{{item.title}}</a>
                 </li>
 			</ul>
 		</li>

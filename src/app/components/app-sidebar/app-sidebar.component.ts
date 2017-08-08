@@ -1,48 +1,36 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 
-import { WidgetService } from '../../services/widget.service';
-
-import {Categories} from '../../models/categories';
-import { Widgets } from '../../models/widgets';
+import { WidgetsData } from '../../models/widget-data';
+import { Category } from '../../models/category';
 import { Widget } from '../../models/widget';
+
 
 @Component({
     selector: 'app-sidebar',
     templateUrl: './app-sidebar.component.html',
-    styleUrls: ['./app-sidebar.component.css'],
-    providers: [WidgetService]
+    styleUrls: ['./app-sidebar.component.css']
 })
 
 export class AppSidebarComponent implements OnInit {
-    @Output() onGetData = new EventEmitter<Widget>();
-    isActive = false;
-    selectedCategory: Categories;
-    categories: Categories[];
-    widgetsList: Widgets[];
-    selectedWidget: Widgets;
-    constructor(
-        private widgetService: WidgetService
-    ) {}
+    @Output() getSelectedWidgetData = new EventEmitter<Widget>();
+    @Input() widgetsData: WidgetsData;
+    selectedCategory: Category;
+    selectedWidget: Widget;
+    categories: Category[];
+    widgetsList: Widget[];
+    constructor() {}
     ngOnInit(): void {
         this.getCategories();
     }
     getCategories(): void {
-        this.widgetService.getCategories().subscribe(categories => this.categories = categories);
+        this.categories = this.widgetsData.categories;
     }
-    onSelectCategory(category: Categories): void {
-        this.isActive = category !== this.selectedCategory ?
-            true : !this.isActive;
-        this.widgetService.getWidgets(category.widgetsCount, category.title)
-            .subscribe(widgets => this.widgetsList = widgets);
-        this.selectedCategory = category;
+    onSelectCategory(category: number): void {
+        this.widgetsList = this.categories[category].widgets;
+        this.selectedCategory = this.categories[category];
     }
-    onSelectWidget(widget: Widgets): void {
+    onSelectWidget(widget: Widget): void {
+        this.getSelectedWidgetData.emit(widget);
         this.selectedWidget = widget;
-        this.widgetService.getWidget(widget.slug).subscribe(data => {
-            this.sendData(data);
-        });
-    }
-    sendData(data: Widget): void {
-        this.onGetData.emit(data);
-    }
+    };
 }
