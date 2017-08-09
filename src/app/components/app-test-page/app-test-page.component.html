@@ -1,9 +1,9 @@
 <header class="row justify-content-between panel panel-default">
         <section class="environment col-1">
             <select [formControl]="widgetDataUrl"  class="custom-select mb-2 mr-sm-2 mb-sm-0" name="widgetDataUrl">
-                <option *ngFor="let item of titles" [value]="item.url">{{item.title}}</option>
+                <option *ngFor="let item of titles;" [value]="item.url">{{item.title}}</option>
             </select>
-<!--            <h2>{{widgetDataUrl.}} soft</h2>-->
+            <h2>{{currentTitleType}} soft</h2>
         </section>
         <section class="col-3">
             <section class="row justify-content-between">
@@ -17,5 +17,5 @@
          <app-search *ngIf="widgetsData" [widgetsData]="widgetsData" (getSelectedWidgetData)="setSelectedWidgetData($event)"></app-search>
          <app-sidebar *ngIf="widgetsData" [widgetsData]="widgetsData" (getSelectedWidgetData)="setSelectedWidgetData($event)"></app-sidebar>
      </section>
-        <app-main *ngIf="defaultWidgetData" class="col-9" [envUrl]="widgetDataUrl.value"[selectedWidgetData]="selectedWidgetData || defaultWidgetData"></app-main>
+        <app-main *ngIf="defaultWidgetData" class="col-9" [envUrl]="widgetDataUrl.value" [selectedWidgetData]="selectedWidgetData || defaultWidgetData"></app-main>
  </section>

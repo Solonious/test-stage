@@ -7,34 +7,23 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-
-import { Category } from '../models/category';
 import { WidgetsData } from '../models/widget-data';
 import { Widget } from '../models/widget';
 
 @Injectable()
 export class WidgetService {
     windowObjectReference: any;
-    private apiUrl = 'http://widgetserver/?path=common/widgetslist';
+    // private apiUrl = '//freeserv.php-test.site.dukascopy.com/?path=common/widgetslist';
     constructor(
         private http: Http,
         private sanitizer: DomSanitizer
     ) {}
-    // getCategoryData(): Observable<Category[]> {
-    //     return this.http.get(this.apiUrl)
-    //         .map(res => res.json().categories as Category[])
-    //         .catch(this.handleError);
-    // }
-    // getVersion(): Observable<string> {
-    //     return this.http.get(this.apiUrl)
-    //         .map(res => res.json().version as string)
-    // }
     handleError(error: any): Observable<any> {
         console.error('An error occurred', error);
         return Observable.throw(error.message || error);
     }
-    getData(): Observable<WidgetsData> {
-        return this.http.get(this.apiUrl)
+    getData(url: string): Observable<WidgetsData> {
+        return this.http.get(url + '?path=common/widgetslist')
             .map(res => res.json() as WidgetsData)
             .catch(this.handleError);
     }
