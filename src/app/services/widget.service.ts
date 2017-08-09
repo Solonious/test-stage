@@ -13,7 +13,6 @@ import { Widget } from '../models/widget';
 @Injectable()
 export class WidgetService {
     windowObjectReference: any;
-    // private apiUrl = '//freeserv.php-test.site.dukascopy.com/?path=common/widgetslist';
     constructor(
         private http: Http,
         private sanitizer: DomSanitizer

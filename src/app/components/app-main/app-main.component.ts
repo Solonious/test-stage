@@ -19,7 +19,6 @@ export class AppMainComponent implements OnChanges, OnInit {
         height: string;
         width: string;
     };
-    message = `Please select widget`;
     errorMessage: string;
     constructor(
         private widgetService: WidgetService

@@ -30,5 +30,7 @@ export class AppSearchComponent implements OnInit {
     onSelectWidget(widget: Widget): void {
         this.getSelectedWidgetData.emit(widget);
         this.selectedWidget = widget;
+        this.searchInput.setValue(widget.title);
+        console.log(widget);
     };
 }

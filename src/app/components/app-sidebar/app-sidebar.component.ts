@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import {Component, OnInit, Output, Input, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 
 import { WidgetsData } from '../../models/widget-data';
 import { Category } from '../../models/category';
@@ -11,7 +11,7 @@ import { Widget } from '../../models/widget';
     styleUrls: ['./app-sidebar.component.css']
 })
 
-export class AppSidebarComponent implements OnInit {
+export class AppSidebarComponent implements OnInit, OnChanges {
     @Output() getSelectedWidgetData = new EventEmitter<Widget>();
     @Input() widgetsData: WidgetsData;
     selectedCategory: Category;
@@ -19,6 +19,14 @@ export class AppSidebarComponent implements OnInit {
     categories: Category[];
     widgetsList: Widget[];
     constructor() {}
+    ngOnChanges(changes: SimpleChanges) {
+        for (const prop in changes) {
+            if (changes.hasOwnProperty(prop)) {
+                const chpr = changes[prop];
+                this.categories = chpr.currentValue.categories;
+            }
+        }
+    }
     ngOnInit(): void {
         this.getCategories();
     }
