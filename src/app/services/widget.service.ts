@@ -13,6 +13,7 @@ import { Widget } from '../models/widget';
 @Injectable()
 export class WidgetService {
     windowObjectReference: any;
+    qs: string;
     constructor(
         private http: Http,
         private sanitizer: DomSanitizer
@@ -35,11 +36,11 @@ export class WidgetService {
     }
     createWidgetData(embedCode: string, url: string): any {
         const params = this.convertEmbedCodeToObject(embedCode);
-        const qs = Object.keys(params.params)
+        this.qs = Object.keys(params.params)
             .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params.params[k])}`)
             .join('&');
         return {
-            dataSrc: this.sanitizer.bypassSecurityTrustResourceUrl(`${url}/?path=${params.type}/index&${qs}`),
+            dataSrc: this.sanitizer.bypassSecurityTrustResourceUrl(`${url}/?path=${params.type}/index&${this.qs}`),
             width: params.params.width,
             height: params.params.height
         };
@@ -58,7 +59,7 @@ export class WidgetService {
         this.windowOpen(`${url}/?path=widget_editor/${module_name}`);
     }
     openInNewWindow(module_name: string, url: string): void {
-        this.windowOpen(`${url}/?path=${module_name}/index`);
+        this.windowOpen(`${url}/?path=${module_name}/index&${this.qs}`);
     }
     private windowOpen(url: string): void {
         if (this.windowObjectReference == null || this.windowObjectReference.closed) {
