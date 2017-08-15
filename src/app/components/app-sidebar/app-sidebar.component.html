@@ -1,7 +1,7 @@
 <section class="sidebar">
 	<ul>
 		<li *ngFor="let category of categories; let i = index" >
-            <span class="arrow" [class.arrow-down]="category !== selectedCategory" (click)="onSelectCategory(i)" *ngIf="category.title">
+            <span class="arrow" (click)="onSelectCategory(i)" *ngIf="category.title">
                 <i class="arrow-right" [class.arrow-down]="category === selectedCategory"></i>
                 <span [class.selected]="category === selectedCategory">{{category.title}}</span>
             </span>

@@ -1,5 +1,5 @@
 <header class="row justify-content-between panel panel-default">
-        <section class="environment col-1">
+        <section class="environment col-2">
             <select [formControl]="widgetDataUrl"  class="custom-select mb-2 mr-sm-2 mb-sm-0" name="widgetDataUrl">
                 <option *ngFor="let item of titles;" [value]="item.url">{{item.title}}</option>
             </select>

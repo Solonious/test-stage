@@ -38,10 +38,14 @@ ul li a:focus {
 .arrow-right {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
 }
 .arrow-down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
 }
 .arrow-right,
 .arrow-down {
