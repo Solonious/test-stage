@@ -26,7 +26,7 @@ export class AppTestPageComponent implements OnInit {
     selectedWidgetData: Widget;
     widgetsData: WidgetsData;
     defaultWidgetName = 'chart';
-    defaultWidgetData: any;
+    defaultWidgetData: Widget;
     constructor(private widgetService: WidgetService) {
         this.widgetDataUrl.valueChanges.subscribe(val => this.getWidgetsData(val));
     }
@@ -47,11 +47,11 @@ export class AppTestPageComponent implements OnInit {
     setSelectedWidgetData(data: Widget): void {
         this.selectedWidgetData = data;
     }
-    getDefaultWidget(name: string): Widget[] {
+    private getDefaultWidget(name: string): Widget[] {
         return this.widgetService.getWidgets(this.widgetsData)
             .filter(item => item.module_name === name);
     }
-    getUrlType(url: string): string {
+    private getUrlType(url: string): string {
         return this.titles.filter(item => item['url'] === url)[0].type;
     }
 }
